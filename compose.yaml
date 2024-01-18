@@ -1,0 +1,14 @@
+services:
+  database : 
+    image : "postgres:latest"
+    ports :
+      - "6789:5432"
+    volumes :
+      - tortasvol:/var/lib/postgres/data
+    environment :
+      - POSTGRES_DB=cakes
+      - POSTGRES_PASSWORD=disorder
+      - POSTGRES_USER=sacred_silence
+
+volumes :
+  crudvol
