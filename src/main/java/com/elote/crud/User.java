@@ -10,19 +10,18 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
     String username;
     String email;
     String phone;
 
-    User() {}
-
-    public Long getId() {
-        return id;
+    User() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User(String username, String email, String phone) {
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
     }
 
     @Override
@@ -36,6 +35,14 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, email, phone);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -56,6 +63,15 @@ public class User {
 
     public String getPhone() {
         return phone;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 
     public void setPhone(String phone) {

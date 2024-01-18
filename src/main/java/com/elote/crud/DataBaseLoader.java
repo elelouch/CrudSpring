@@ -11,18 +11,8 @@ public class DataBaseLoader {
     @Bean
     CommandLineRunner initDatabase(UserRepository repo) {
         return args -> {
-            User elo = new User();
-            elo.setEmail("saracatunga@opa.com");
-            elo.setUsername("rojas");
-            elo.setPhone("341612345");
-
-            User nana = new User();
-            nana.setEmail("nanamiamol@gmail.com");
-            nana.setUsername("nany");
-            nana.setPhone("3410987455");
-
-            logger.info(repo.save(elo) + " was stored");
-            logger.info(repo.save(nana) + " was stored");
+            logger.info(repo.save(new User("elo","elo@gmail.com", "3416987234")) + " was stored");
+            logger.info(repo.save(new User("nana","nana@gmail.com", "341111222")) + " was stored");
         };
     }
 }

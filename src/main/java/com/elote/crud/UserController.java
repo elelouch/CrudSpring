@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("users/")
+@RestController
 public class UserController {
     private final UserRepository repo;
 
