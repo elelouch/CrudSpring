@@ -1,8 +1,15 @@
 package com.elote.crud;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 
 @RestController
 @RequestMapping("/clients")
@@ -14,17 +21,27 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getUsers() {
-        return repo.findAll();
+    public CollectionModel<EntityModel<Client>> getAllClients() {
+        List<EntityModel<Client>> clients = repo.findAll().stream().map(client -> EntityModel.of(client,
+                        linkTo(methodOn(ClientController.class).getOneClient(client.getId())).withSelfRel(),
+                        linkTo(methodOn(ClientController.class).getAllClients()).withRel("employees")))
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(clients, linkTo(methodOn(ClientController.class).getAllClients()).withSelfRel());
     }
 
     @GetMapping("/{id}")
-    public Client oneClient(@PathVariable Long id) {
-        return repo.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
+    public EntityModel<Client> getOneClient(@PathVariable Long id) {
+        Client client = repo.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
+        // Obtiene el metodo del controlador y arma a partir de este un link hacia
+        // el mismo cliente, linkTo tambien funciona con metodos
+        return EntityModel.of(client,
+                linkTo(methodOn(ClientController.class).getOneClient(id)).withSelfRel(),
+                linkTo(methodOn(ClientController.class).getAllClients()).withRel("clients"));
     }
 
     @PostMapping
-    public Client oneClient(Client client) {
+    public Client storeClient(Client client) {
         return repo.save(client);
     }
 
