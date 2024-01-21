@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class User {
+public class Client {
     @Id
     @GeneratedValue
     private Long id;
@@ -15,10 +15,10 @@ public class User {
     String email;
     String phone;
 
-    User() {
+    Client() {
     }
 
-    public User(String username, String email, String phone) {
+    public Client(String username, String email, String phone) {
         this.username = username;
         this.email = email;
         this.phone = phone;
@@ -28,7 +28,7 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        Client user = (Client) o;
         return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone);
     }
 
