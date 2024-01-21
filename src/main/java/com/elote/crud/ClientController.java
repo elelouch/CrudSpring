@@ -15,16 +15,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RequestMapping("/clients")
 public class ClientController {
     private final ClientRepository repo;
+    private ClientModelAssembler linksAssembler;
 
-    ClientController(ClientRepository repo) {
+    // recordar inyectar cada servicio que se utiliza, en este caso el links assembler
+    ClientController(ClientRepository repo, ClientModelAssembler linksAssembler) {
         this.repo = repo;
+        this.linksAssembler = linksAssembler;
     }
 
     @GetMapping
     public CollectionModel<EntityModel<Client>> getAllClients() {
-        List<EntityModel<Client>> clients = repo.findAll().stream().map(client -> EntityModel.of(client,
-                        linkTo(methodOn(ClientController.class).getOneClient(client.getId())).withSelfRel(),
-                        linkTo(methodOn(ClientController.class).getAllClients()).withRel("employees")))
+        List<EntityModel<Client>> clients = repo.findAll()
+                .stream()
+                .map(client -> linksAssembler.toModel(client))
                 .collect(Collectors.toList());
 
         return CollectionModel.of(clients, linkTo(methodOn(ClientController.class).getAllClients()).withSelfRel());
@@ -33,11 +36,7 @@ public class ClientController {
     @GetMapping("/{id}")
     public EntityModel<Client> getOneClient(@PathVariable Long id) {
         Client client = repo.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
-        // Obtiene el metodo del controlador y arma a partir de este un link hacia
-        // el mismo cliente, linkTo tambien funciona con metodos
-        return EntityModel.of(client,
-                linkTo(methodOn(ClientController.class).getOneClient(id)).withSelfRel(),
-                linkTo(methodOn(ClientController.class).getAllClients()).withRel("clients"));
+        return linksAssembler.toModel(client);
     }
 
     @PostMapping

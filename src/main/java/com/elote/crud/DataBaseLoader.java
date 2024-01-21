@@ -13,8 +13,8 @@ public class DataBaseLoader {
     @Bean
     CommandLineRunner initDatabase(ClientRepository repo) {
         return args -> {
-            logger.info(repo.save(new Client("elo","elo@gmail.com", "3416987234")) + " was stored");
-            logger.info(repo.save(new Client("nana","nana@gmail.com", "341111222")) + " was stored");
+            logger.info(repo.save(new Client("elo","rojas","elo@gmail.com", "3416987234")) + " was stored");
+            logger.info(repo.save(new Client("nana","gonzalez","nana@gmail.com", "341111222")) + " was stored");
         };
     }
 }

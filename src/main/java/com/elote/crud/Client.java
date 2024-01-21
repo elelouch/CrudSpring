@@ -11,15 +11,33 @@ public class Client {
     @Id
     @GeneratedValue
     private Long id;
-    String username;
-    String email;
-    String phone;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     Client() {
     }
 
-    public Client(String username, String email, String phone) {
-        this.username = username;
+    public Client(String firstName, String lastName, String email, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phone = phone;
     }
@@ -29,12 +47,12 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client user = (Client) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone);
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, phone);
+        return Objects.hash(id, firstName, lastName, email, phone);
     }
 
     public Long getId() {
@@ -46,11 +64,13 @@ public class Client {
     }
 
     public String getUsername() {
-        return username;
+        return firstName + " " + lastName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        String[] splittedUser = username.split(" ");
+        firstName = splittedUser[0];
+        lastName = splittedUser[1];
     }
 
     public String getEmail() {
@@ -68,7 +88,8 @@ public class Client {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "firstName='" + firstName + '\'' +
+                "lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
