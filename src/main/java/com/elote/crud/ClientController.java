@@ -54,8 +54,8 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public Client replaceClient(@RequestBody Client newClient, @PathVariable Long id) {
-        return repo.findById(id).map(client -> {
+    public ResponseEntity<?> replaceClient(@RequestBody Client newClient, @PathVariable Long id) {
+        Client updatedClient = repo.findById(id).map(client -> {
             client.setPhone(newClient.getPhone());
             client.setEmail(newClient.getEmail());
             client.setFirstName(newClient.getFirstName());
@@ -65,11 +65,14 @@ public class ClientController {
             newClient.setId(id);
             return repo.save(newClient);
         });
+        EntityModel model = linksAssembler.toModel(updatedClient);
+        return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClient(@PathVariable Long id) {
+    public ResponseEntity<?> deleteClient(@PathVariable Long id) {
         repo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
