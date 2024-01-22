@@ -1,18 +1,15 @@
 package com.elote.crud;
 
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
 
 @RestController
 @RequestMapping("/clients")
@@ -46,7 +43,7 @@ public class ClientController {
     // Iana link relations es una clase basada en los estandares iana
     // .created() devuelve un BodyBuilder que se va a utilizar con el model de entidad
     @PostMapping
-    public ResponseEntity<?> storeClient(Client client) {
+    public ResponseEntity<?> storeClient(@RequestBody Client client) {
         EntityModel<Client> model = linksAssembler.toModel(repo.save(client));
         return ResponseEntity
                 .created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())

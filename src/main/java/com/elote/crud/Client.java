@@ -32,8 +32,7 @@ public class Client {
         this.lastName = lastName;
     }
 
-    Client() {
-    }
+    Client() {}
 
     public Client(String firstName, String lastName, String email, String phone) {
         this.firstName = firstName;
