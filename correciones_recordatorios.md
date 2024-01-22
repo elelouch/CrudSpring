@@ -22,3 +22,4 @@ del BEAN.
     - Stateless (Es como andar en auto con seniales en vez de utilizar un mapa).
     - Autonomia cliente-servidor.
     - Layered (Composicion jerarquica, ejemplo MVC).
+- Para los containers NO USAR LATEST
