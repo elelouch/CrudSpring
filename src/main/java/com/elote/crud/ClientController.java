@@ -1,7 +1,10 @@
 package com.elote.crud;
 
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -15,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RequestMapping("/clients")
 public class ClientController {
     private final ClientRepository repo;
-    private ClientModelAssembler linksAssembler;
+    private final ClientModelAssembler linksAssembler;
 
     // recordar inyectar cada servicio que se utiliza, en este caso el links assembler
     ClientController(ClientRepository repo, ClientModelAssembler linksAssembler) {
@@ -39,17 +42,24 @@ public class ClientController {
         return linksAssembler.toModel(client);
     }
 
+    // Response entity added, se utiliza para enviar un 201 CREATED
+    // Iana link relations es una clase basada en los estandares iana
+    // .created() devuelve un BodyBuilder que se va a utilizar con el model de entidad
     @PostMapping
-    public Client storeClient(Client client) {
-        return repo.save(client);
+    public ResponseEntity<?> storeClient(Client client) {
+        EntityModel<Client> model = linksAssembler.toModel(repo.save(client));
+        return ResponseEntity
+                .created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(model);
     }
 
     @PutMapping("/{id}")
     public Client replaceClient(@RequestBody Client newClient, @PathVariable Long id) {
         return repo.findById(id).map(client -> {
-            client.setPhone(newClient.phone);
-            client.setEmail(newClient.email);
-            client.setUsername(newClient.username);
+            client.setPhone(newClient.getPhone());
+            client.setEmail(newClient.getEmail());
+            client.setFirstName(newClient.getFirstName());
+            client.setLastName(newClient.getLastName());
             return repo.save(client);
         }).orElseGet(() -> {
             newClient.setId(id);
