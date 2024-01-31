@@ -1,4 +1,4 @@
-package com.elote.crud;
+package com.elote.crud.client;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.RepresentationModel;

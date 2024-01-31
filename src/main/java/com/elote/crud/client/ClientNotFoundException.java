@@ -1,4 +1,4 @@
-package com.elote.crud;
+package com.elote.crud.client;
 
 public class ClientNotFoundException extends RuntimeException{
     ClientNotFoundException(Long id) {

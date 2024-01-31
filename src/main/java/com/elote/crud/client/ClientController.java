@@ -1,4 +1,4 @@
-package com.elote.crud;
+package com.elote.crud.client;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -14,6 +14,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
+
     private final ClientRepository repo;
     private final ClientModelAssembler linksAssembler;
 
@@ -25,17 +26,24 @@ public class ClientController {
 
     @GetMapping
     public CollectionModel<EntityModel<Client>> getAllClients() {
-        List<EntityModel<Client>> clients = repo.findAll()
+        List<EntityModel<Client>> clients = repo
+                .findAll()
                 .stream()
                 .map(client -> linksAssembler.toModel(client))
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(clients, linkTo(methodOn(ClientController.class).getAllClients()).withSelfRel());
+        return CollectionModel
+                .of(clients,
+                        linkTo(methodOn(ClientController.class).getAllClients()).withSelfRel()
+                );
     }
 
     @GetMapping("/{id}")
     public EntityModel<Client> getOneClient(@PathVariable Long id) {
-        Client client = repo.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
+        Client client = repo
+                .findById(id)
+                .orElseThrow(() -> new ClientNotFoundException(id));
+
         return linksAssembler.toModel(client);
     }
 
@@ -45,6 +53,7 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<?> storeClient(@RequestBody Client client) {
         EntityModel<Client> model = linksAssembler.toModel(repo.save(client));
+
         return ResponseEntity
                 .created(model.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(model);
@@ -62,13 +71,16 @@ public class ClientController {
             newClient.setId(id);
             return repo.save(newClient);
         });
+
         EntityModel model = linksAssembler.toModel(updatedClient);
+
         return ResponseEntity.created(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(model);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {
         repo.deleteById(id);
+
         return ResponseEntity.noContent().build();
     }
 
