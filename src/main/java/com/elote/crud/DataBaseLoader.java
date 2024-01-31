@@ -18,11 +18,17 @@ public class DataBaseLoader {
     @Bean
     CommandLineRunner initDatabase(ClientRepository clientRepository, OrderRepository orderRepository) {
         return args -> {
-            logger.info(clientRepository.save(new Client("elo","rojas","elo@gmail.com", "3416987234")) + " was stored");
-            logger.info(clientRepository.save(new Client("nana","gonzalez","nana@gmail.com", "341111222")) + " was stored");
+            Client elo = new Client("elias", "rojas","rojas@rojas.com","341222333");
 
-            logger.info(orderRepository.save(new Order("Rogel", State.WAITING)) + " was stored");
-            logger.info(orderRepository.save(new Order("Matilda", State.CANCELLED)) + " was stored");
+            Order redVelvet = new Order("Red velvet", State.WAITING, elo);
+            Order matilda = new Order("Matilda", State.WAITING, elo);
+
+            clientRepository.save(elo);
+            orderRepository.save(redVelvet);
+            orderRepository.save(matilda);
+            logger.info("client " + elo + " added. With the following orders :");
+            logger.info(redVelvet.toString());
+            logger.info(matilda.toString());
+        };
     };
-}
 }

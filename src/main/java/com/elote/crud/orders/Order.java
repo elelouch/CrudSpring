@@ -12,12 +12,16 @@ public class Order {
     @Id @GeneratedValue private Long id;
     private String additionalInfo;
     private State state;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     public Order() {}
 
-    public Order(String additionalInfo, State state) {
+    public Order(String additionalInfo, State state, Client client) {
         this.additionalInfo = additionalInfo;
         this.state = state;
+        this.client = client;
     }
 
     public Long getId() {
@@ -26,6 +30,10 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Client getClient() {
+        return client;
     }
 
     public String getAdditionalInfo() {

@@ -15,9 +15,19 @@ public class Client {
     private String lastName;
     private String email;
     private String phone;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private Set<Order> orders;
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
     }
 
     public void setFirstName(String firstName) {
