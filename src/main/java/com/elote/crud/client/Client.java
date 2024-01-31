@@ -1,9 +1,7 @@
 package com.elote.crud.client;
 
 import com.elote.crud.orders.Order;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +17,6 @@ public class Client {
     private String phone;
 
     public String getFirstName() {
-        int pedro;
         return firstName;
     }
 
