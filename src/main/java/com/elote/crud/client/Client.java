@@ -1,6 +1,7 @@
 package com.elote.crud.client;
 
 import com.elote.crud.orders.Order;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -15,6 +16,9 @@ public class Client {
     private String lastName;
     private String email;
     private String phone;
+    // See bidirectional reference with jackson
+    // Also cascade type merge allows to compile
+    @JsonBackReference
     @OneToMany(mappedBy = "client", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Set<Order> orders;
 

@@ -1,6 +1,7 @@
 package com.elote.crud.orders;
 
 import com.elote.crud.client.Client;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -12,6 +13,7 @@ public class Order {
     @Id @GeneratedValue private Long id;
     private String additionalInfo;
     private State state;
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;

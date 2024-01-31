@@ -4,6 +4,7 @@ El path comienza desde src.java.main ->
 - Luego de agregar cambios en la entidad de cliente (Client), el controlador se vio afectado
 y hubo que modificar el resto.
 - A la clase RepresentationModelAssembler le falto el @Component.
+- No se pueden printear cosas con relaciones bidireccionales.
 
 # Recordatorios
 - En general, recordar utilizar anotaciones, que son las que sacan la app andando.
@@ -23,3 +24,7 @@ del BEAN.
     - Autonomia cliente-servidor.
     - Layered (Composicion jerarquica, ejemplo MVC).
 - Para los containers NO USAR LATEST
+- Para no loopear infinitamente en relaciones bidireccionales uso @JsonManagedReference
+(en la clase a ser serializada, la forward reference).
+- Para utilizar OneToMany tengo que usar un Set<Clase> junto a un add al set y un get del set
+(ver ejemplo).
